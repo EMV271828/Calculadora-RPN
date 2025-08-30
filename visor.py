@@ -3,7 +3,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QLineEdit
 
 
 class Visor(QWidget):
-    def __init__(self,  valor_inicial):
+    def __init__(self, valor_inicial, fonte_tamanho, tela_tamanho):
         super().__init__()
 
         layout = QVBoxLayout()
@@ -12,7 +12,7 @@ class Visor(QWidget):
 
         font_size = self.screen.font()
 
-        font_size.setPointSize(27)
+        font_size.setPointSize(fonte_tamanho)
 
         self.screen.setFont(font_size)
 
@@ -20,7 +20,7 @@ class Visor(QWidget):
 
         self.screen.setReadOnly(True)
 
-        self.screen.setFixedSize(QSize(900, 150))
+        self.screen.setFixedSize(QSize(tela_tamanho[0], tela_tamanho[1]))
 
         layout.addWidget(self.screen)
 

@@ -1,7 +1,6 @@
 import sys
 from PySide6.QtWidgets import QMainWindow, QHBoxLayout, QApplication
 from visor import *
-from visor_stack import *
 from painel import *
 from stack import *
 import variaveis
@@ -24,9 +23,9 @@ class Calculadora(QMainWindow):
 
         self.operators = variaveis.operadores
 
-        self.visor = Visor(str(self.stack.ultimo_elemento()))
+        self.visor = Visor(str(self.stack.ultimo_elemento()), 27, [900,150])
 
-        self.visor_stack = VisorStack(self.stack.ultimos_quatro_elementos())
+        self.visor_stack = Visor(self.stack.ultimos_quatro_elementos(), 15, [500,40])
 
         self.painel1 = Painel(variaveis.botoes1, self)
 
