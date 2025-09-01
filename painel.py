@@ -1,4 +1,4 @@
-from PySide6.QtCore import QSize
+from PySide6.QtCore import QSize, QEvent, QTimer
 from PySide6.QtWidgets import QWidget, QButtonGroup, QGridLayout, QPushButton
 
 
@@ -11,9 +11,17 @@ class Painel(QWidget):
 
         self.valores = valores
 
+        self.clique_duplo = False
+
         self.botoes = QButtonGroup()
 
         self.botoes.idClicked.connect(self.button_input)
+
+        self.timer = QTimer()
+
+        self.timer.setSingleShot(True)
+
+        self.timer.timeout.connect(self.single_click)
 
         layout = QGridLayout()
 
@@ -23,6 +31,7 @@ class Painel(QWidget):
             for j in range(4):
                 b = QPushButton(f"{valores[i * 4 + j]}")
                 b.setFixedSize(QSize(90, 90))
+                b.installEventFilter(self)
                 if valores[i * 4 + j] == 'Inv':
                     b.setStyleSheet("background-color: red")
                 self.botoes.addButton(b, i * 4 + j)
@@ -30,9 +39,26 @@ class Painel(QWidget):
 
         self.setLayout(layout)
 
+    def single_click(self):
+        if self.clique_duplo:
+            self.clique_duplo = False
+
+    def eventFilter(self, obj, e):
+        if isinstance(obj, QPushButton):
+
+            if e.type() == QEvent.MouseButtonPress and obj.text() == 'DEL':
+                self.timer.start(100)
+
+
+            elif e.type() == QEvent.MouseButtonDblClick and obj.text() == 'DEL':
+                self.clique_duplo = True
+                self.timer.stop()
+
+        return super().eventFilter(obj, e)
+
     def button_input(self, idt):
         self.calculadora.operacao(self.botoes.button(idt).text())
 
     def inv_function(self, valores):
-        for i,j in enumerate(self.botoes.buttons()):
+        for i, j in enumerate(self.botoes.buttons()):
             j.setText(valores[i])

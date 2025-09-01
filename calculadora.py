@@ -1,5 +1,6 @@
 import sys
 from PySide6.QtWidgets import QMainWindow, QHBoxLayout, QApplication
+
 from visor import *
 from painel import *
 from stack import *
@@ -9,6 +10,7 @@ import variaveis
 class Calculadora(QMainWindow):
     def __init__(self):
         super().__init__()
+
         self.setWindowTitle('Calculadora RPN')
 
         self.setFixedSize(QSize(800, 650))
@@ -23,9 +25,9 @@ class Calculadora(QMainWindow):
 
         self.operators = variaveis.operadores
 
-        self.visor = Visor(str(self.stack.ultimo_elemento()), 27, [900,150])
+        self.visor = Visor(str(self.stack.ultimo_elemento()), 27, [900, 150])
 
-        self.visor_stack = Visor(self.stack.ultimos_quatro_elementos(), 15, [500,40])
+        self.visor_stack = Visor(self.stack.ultimos_quatro_elementos(), 15, [500, 40])
 
         self.painel1 = Painel(variaveis.botoes1, self)
 
@@ -55,15 +57,6 @@ class Calculadora(QMainWindow):
 
         self.setCentralWidget(widget)
 
-    def solver(self, operador, tipo):
-
-        if tipo == 'binary':
-            self.stack.push(self.operators[tipo][operador](self.stack.pop(), self.stack.pop()))
-        else:
-            self.stack.push(self.operators[tipo][operador](self.stack.pop()))
-
-        return str(self.stack.ultimo_elemento())
-
     def avaliar_registrador(self):
         if self.registrador == 'e':
             return '2.71828182846'
@@ -73,7 +66,18 @@ class Calculadora(QMainWindow):
 
         return self.registrador
 
+    def solver(self, operador, tipo):
+
+        if tipo == 'binary':
+            self.stack.push(self.operators[tipo][operador](self.stack.pop(), self.stack.pop()))
+        else:
+            self.stack.push(self.operators[tipo][operador](self.stack.pop()))
+
+        return str(self.stack.ultimo_elemento())
+
     def operacao(self, signal):
+
+        # print(self.painel2.clique_duplo)
 
         if signal == "ENTER":
             self.over_write = True
@@ -103,7 +107,11 @@ class Calculadora(QMainWindow):
             self.over_write = True
 
         elif signal == "DEL":
-            self.registrador = self.registrador[: len(self.registrador) - 1]
+            if self.painel1.clique_duplo or len(self.registrador) == 1:
+                self.registrador = str(self.stack.ultimo_elemento())
+                self.over_write = True
+            else:
+                self.registrador = self.registrador[: len(self.registrador) - 1]
 
         elif signal == "CLR":
             self.stack.clear()
@@ -123,4 +131,4 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = Calculadora()
     window.show()
-    app.exec()
+    sys.exit(app.exec())
