@@ -21,7 +21,7 @@ class Painel(QWidget):
 
         self.timer.setSingleShot(True)
 
-        self.timer.timeout.connect(self.single_click)
+        self.timer.timeout.connect(self.clique_simples)
 
         layout = QGridLayout()
 
@@ -31,6 +31,9 @@ class Painel(QWidget):
             for j in range(4):
                 b = QPushButton(f"{valores[i * 4 + j]}")
                 b.setFixedSize(QSize(90, 90))
+                font_size = b.font()
+                font_size.setPointSize(18)
+                b.setFont(font_size)
                 b.installEventFilter(self)
                 if valores[i * 4 + j] == 'Inv':
                     b.setStyleSheet("background-color: red")
@@ -39,7 +42,7 @@ class Painel(QWidget):
 
         self.setLayout(layout)
 
-    def single_click(self):
+    def clique_simples(self):
         if self.clique_duplo:
             self.clique_duplo = False
 

@@ -3,13 +3,13 @@ from scipy.special import factorial
 
 operadores = {
     'binary': {'×': lambda x, y: x * y, '-': lambda x, y: y - x, '÷': lambda x, y: y / x,
-               '+': lambda x, y: x + y, '%': lambda x, y: y % x, '^': lambda x, y: x ** y
+               '+': lambda x, y: x + y, '%': lambda x, y: y % x, 'xʸ': lambda x, y: x ** y
                },
-    'unary': {'10^(x)': lambda x: 10 ** x, 'Abs': lambda x: x * -1, 'e^x': lambda x: np.exp([x])[0],
-              '!': lambda x: factorial(x), 'log': lambda x: np.log10([x])[0], '2^x': lambda x: np.exp2([x])[0],
+    'unary': {'10ˣ': lambda x: 10 ** x, 'Abs': lambda x: x * -1, 'eˣ': lambda x: np.exp([x])[0],
+              '!': lambda x: factorial(x), 'log': lambda x: np.log10([x])[0], '2ˣ': lambda x: np.exp2([x])[0],
               'ln': lambda x: np.log([x])[0], 'sin': lambda x: np.sin([x])[0], 'cos': lambda x: np.cos([x])[0],
-              'tan': lambda x: np.tan([x])[0], '√': lambda x: np.sqrt([x])[0], 'sin-1': lambda x: np.arcsin([x])[0],
-              'cos-1': lambda x: np.arccos([x])[0], 'tan-1': lambda x: np.arctan([x])[0]
+              'tan': lambda x: np.tan([x])[0], '√': lambda x: np.sqrt([x])[0], 'sin⁻¹': lambda x: np.arcsin([x])[0],
+              'cos⁻¹': lambda x: np.arccos([x])[0], 'tan⁻¹': lambda x: np.arctan([x])[0]
               }
 }
 
@@ -21,15 +21,15 @@ botoes1 = [
 ]
 
 botoes2 = [
-    'Inv', ' Abs', ' ^', ' !'
+    'Inv', ' Abs', ' xʸ', ' !'
     , ' log', ' ln', ' RAD', 'e'
     , ' sin', ' cos', ' tan', 'π'
     , 'CLR', ' %', ' ÷', ' √'
 ]
 
 botoes3 = [
-    'Inv', ' Abs', ' ^', ' !'
-    , ' 10^x', ' e^x', ' RAD', 'e'
-    , ' sin-1', ' cos-1', ' tan-1', 'π'
-    , 'CLR', ' %', ' ÷', ' 2^x'
+    'Inv', ' Abs', ' xʸ', ' !'
+    , ' 10ˣ', ' eˣ', ' RAD', 'e'
+    , ' sin⁻¹', ' cos⁻¹', ' tan⁻¹', 'π'
+    , 'CLR', ' %', ' ÷', ' 2ˣ'
 ]

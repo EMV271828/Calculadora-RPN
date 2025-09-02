@@ -19,10 +19,11 @@ class Stack:
             return None
 
     def push(self, valor):
-        if self.tamanho < self.n - 1:
+        if self.tamanho < self.n:
             self.stack[self.idx] = valor
             self.idx += 1
             self.tamanho += 1
+
 
     def ultimo_elemento(self):
         return self.stack[self.idx - 1]

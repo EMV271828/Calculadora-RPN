@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QMainWindow, QHBoxLayout, QApplication
 from visor import *
 from painel import *
 from stack import *
+from erros import *
 import variaveis
 
 
@@ -16,6 +17,8 @@ class Calculadora(QMainWindow):
         self.setFixedSize(QSize(800, 650))
 
         self.registrador = '0.0'
+
+        self.mensagem_de_erro = False
 
         self.over_write = True
 
@@ -69,7 +72,11 @@ class Calculadora(QMainWindow):
     def solver(self, operador, tipo):
 
         if tipo == 'binary':
+
+            if self.stack.tamanho < 2:
+                raise PrecisaDeDoisOperandos(operador)
             self.stack.push(self.operators[tipo][operador](self.stack.pop(), self.stack.pop()))
+
         else:
             self.stack.push(self.operators[tipo][operador](self.stack.pop()))
 
@@ -77,51 +84,60 @@ class Calculadora(QMainWindow):
 
     def operacao(self, signal):
 
-        # print(self.painel2.clique_duplo)
-
-        if signal == "ENTER":
-            self.over_write = True
-
-            self.stack.push(np.float64(self.avaliar_registrador()))
-
-            self.registrador = str(self.stack.ultimo_elemento())
-
-        elif signal == "Inv":
-            if not self.inv_button:
-                self.inv_button = True
-                self.painel2.inv_function(variaveis.botoes3)
-            else:
-                self.inv_button = False
-                self.painel2.inv_function(variaveis.botoes2)
-
-        elif len(signal.split(" ")) > 1:
-
-            if self.registrador.isdigit():
-                self.stack.push(np.float64(self.avaliar_registrador()))
-
-            if signal.split(" ")[1] in self.operators['binary']:
-                self.registrador = self.solver(signal.split(" ")[1], 'binary')
-            else:
-                self.registrador = self.solver(signal.split(" ")[1], 'unary')
-
-            self.over_write = True
-
-        elif signal == "DEL":
-            if self.painel1.clique_duplo or len(self.registrador) == 1:
-                self.registrador = str(self.stack.ultimo_elemento())
-                self.over_write = True
-            else:
-                self.registrador = self.registrador[: len(self.registrador) - 1]
-
-        elif signal == "CLR":
-            self.stack.clear()
-
-        elif self.over_write:
-            self.registrador = signal
-            self.over_write = False
+        if self.mensagem_de_erro and signal != 'DEL':
+            self.registrador = "Clique em DEL para retomar operacoes"
 
         else:
-            self.registrador = self.registrador + signal
+
+            if signal == "ENTER":
+                self.over_write = True
+
+                self.stack.push(np.float64(self.avaliar_registrador()))
+
+                self.registrador = str(self.stack.ultimo_elemento())
+
+            elif signal == "Inv":
+                if not self.inv_button:
+                    self.inv_button = True
+                    self.painel2.inv_function(variaveis.botoes3)
+                else:
+                    self.inv_button = False
+                    self.painel2.inv_function(variaveis.botoes2)
+
+            elif signal == "DEL":
+                if self.painel1.clique_duplo or len(self.registrador) == 1 or self.mensagem_de_erro:
+                    self.mensagem_de_erro = False
+                    self.registrador = '0.0'
+                    self.over_write = True
+                else:
+                    self.registrador = self.registrador[: len(self.registrador) - 1]
+
+            elif signal == "CLR":
+                self.stack.clear()
+
+            elif len(signal.split(" ")) > 1:
+
+                if self.registrador.isdigit():
+                    self.stack.push(np.float64(self.avaliar_registrador()))
+
+                if signal.split(" ")[1] in self.operators['binary']:
+                    try:
+                        self.registrador = self.solver(signal.split(" ")[1], 'binary')
+                    except PrecisaDeDoisOperandos as e:
+                        self.mensagem_de_erro = True
+                        self.stack.pop()
+                        self.registrador = str(e)
+                else:
+                    self.registrador = self.solver(signal.split(" ")[1], 'unary')
+
+                self.over_write = True
+
+            elif self.over_write:
+                self.registrador = signal
+                self.over_write = False
+
+            else:
+                self.registrador = self.registrador + signal
 
         self.visor.screen.setText(self.registrador)
         self.visor_stack.screen.setText(self.stack.ultimos_quatro_elementos())
