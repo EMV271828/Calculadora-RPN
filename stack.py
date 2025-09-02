@@ -28,7 +28,7 @@ class Stack:
     def ultimo_elemento(self):
         return self.stack[self.idx - 1]
 
-    def ultimos_quatro_elementos(self):
+    def ultimos_elementos(self):
         if self.idx == 0:
             return str(self.stack[0])
         if 1 <= self.idx < 10:

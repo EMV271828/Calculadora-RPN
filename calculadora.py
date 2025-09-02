@@ -30,7 +30,7 @@ class Calculadora(QMainWindow):
 
         self.visor = Visor(str(self.stack.ultimo_elemento()), 27, [900, 150])
 
-        self.visor_stack = Visor(self.stack.ultimos_quatro_elementos(), 15, [500, 40])
+        self.visor_stack = Visor(self.stack.ultimos_elementos(), 15, [500, 40])
 
         self.painel1 = Painel(variaveis.botoes1, self)
 
@@ -72,12 +72,15 @@ class Calculadora(QMainWindow):
     def solver(self, operador, tipo):
 
         if tipo == 'binary':
-
             if self.stack.tamanho < 2:
                 raise PrecisaDeDoisOperandos(operador)
+
             self.stack.push(self.operators[tipo][operador](self.stack.pop(), self.stack.pop()))
 
         else:
+            if self.stack.tamanho < 1:
+                raise PrecisaDeUmOperando(operador)
+
             self.stack.push(self.operators[tipo][operador](self.stack.pop()))
 
         return str(self.stack.ultimo_elemento())
@@ -128,7 +131,12 @@ class Calculadora(QMainWindow):
                         self.stack.pop()
                         self.registrador = str(e)
                 else:
-                    self.registrador = self.solver(signal.split(" ")[1], 'unary')
+                    try:
+                        self.registrador = self.solver(signal.split(" ")[1], 'unary')
+                    except PrecisaDeUmOperando as e:
+                        self.mensagem_de_erro = True
+                        self.stack.pop()
+                        self.registrador = str(e)
 
                 self.over_write = True
 
@@ -140,7 +148,7 @@ class Calculadora(QMainWindow):
                 self.registrador = self.registrador + signal
 
         self.visor.screen.setText(self.registrador)
-        self.visor_stack.screen.setText(self.stack.ultimos_quatro_elementos())
+        self.visor_stack.screen.setText(self.stack.ultimos_elementos())
 
 
 if __name__ == '__main__':
