@@ -22,4 +22,4 @@ class ForaDoDominio(Exception):
         self.dominio = dominio
 
     def __str__(self):
-        return f"Use valores entre {self.dominio} para '{self.op}'"
+        return f"Use valores {self.dominio} para '{self.op}'"

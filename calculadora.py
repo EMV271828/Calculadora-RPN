@@ -25,6 +25,8 @@ class Calculadora(QMainWindow):
 
         self.inv_button = False
 
+        self.deg_button = True
+
         self.stack = Stack(50)
 
         self.operators = variaveis.operadores
@@ -92,6 +94,8 @@ class Calculadora(QMainWindow):
             self.registrador = "Clique em DEL para retomar operacoes"
 
         else:
+            print(idt)
+
             if signal == "ENTER":
                 self.over_write = True
 
@@ -107,6 +111,9 @@ class Calculadora(QMainWindow):
                     self.inv_button = False
                     self.painel2.inv_function(variaveis.botoes2)
 
+                if not self.deg_button:
+                    self.painel2.botoes.button(4).setText("Rad")
+
             elif signal == "DEL":
                 if self.painel1.clique_duplo or len(self.registrador) == 1 or self.mensagem_de_erro:
                     self.mensagem_de_erro = False
@@ -119,9 +126,11 @@ class Calculadora(QMainWindow):
                 self.stack.clear()
 
             elif signal == "Deg" or signal == "Rad":
-                if signal == "Deg":
+                if self.deg_button:
+                    self.deg_button = False
                     self.painel2.botoes.button(idt).setText("Rad")
                 else:
+                    self.deg_button = True
                     self.painel2.botoes.button(idt).setText("Deg")
 
             elif len(signal.split(" ")) > 1:
@@ -145,7 +154,7 @@ class Calculadora(QMainWindow):
                     else:
                         try:
                             self.registrador = self.solver(signal.split(" ")[1], 'unary')
-                        except PrecisaDeUmOperando as e:
+                        except (PrecisaDeUmOperando, ForaDoDominio) as e:
                             self.mensagem_de_erro = True
                             self.stack.pop()
                             self.registrador = str(e)
