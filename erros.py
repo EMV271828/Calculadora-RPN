@@ -4,7 +4,7 @@ class PrecisaDeDoisOperandos(Exception):
         self.op = op
 
     def __str__(self):
-        return f"A operacao {self.op} precisa de dois operandos"
+        return f"'{self.op}' precisa de dois operandos"
 
 
 class PrecisaDeUmOperando(Exception):
@@ -13,4 +13,13 @@ class PrecisaDeUmOperando(Exception):
         self.op = op
 
     def __str__(self):
-        return f"A operacao {self.op} precisa de um operando"
+        return f"'{self.op}' precisa de um operando"
+
+class ForaDoDominio(Exception):
+    def __init__(self, op, dominio):
+        super().__init__()
+        self.op = op
+        self.dominio = dominio
+
+    def __str__(self):
+        return f"Use valores entre {self.dominio} para '{self.op}'"

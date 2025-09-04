@@ -5,7 +5,7 @@ operadores = {
     'binary': {'×': lambda x, y: x * y, '-': lambda x, y: y - x, '÷': lambda x, y: y / x,
                '+': lambda x, y: x + y, '%': lambda x, y: y % x, 'xʸ': lambda x, y: x ** y
                },
-    'unary': {'10ˣ': lambda x: 10 ** x, 'Abs': lambda x: x * -1, 'eˣ': lambda x: np.exp([x])[0],
+    'unary': {'10ˣ': lambda x: 10 ** x, 'Abs': lambda x: np.abs(x), 'eˣ': lambda x: np.exp([x])[0],
               '!': lambda x: factorial(x), 'log': lambda x: np.log10([x])[0], '2ˣ': lambda x: np.exp2([x])[0],
               'ln': lambda x: np.log([x])[0], 'sin': lambda x: np.sin([x])[0], 'cos': lambda x: np.cos([x])[0],
               'tan': lambda x: np.tan([x])[0], '√': lambda x: np.sqrt([x])[0], 'sin⁻¹': lambda x: np.arcsin([x])[0],

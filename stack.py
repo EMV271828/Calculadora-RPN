@@ -24,7 +24,6 @@ class Stack:
             self.idx += 1
             self.tamanho += 1
 
-
     def ultimo_elemento(self):
         return self.stack[self.idx - 1]
 

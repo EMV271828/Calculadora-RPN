@@ -91,7 +91,6 @@ class Calculadora(QMainWindow):
             self.registrador = "Clique em DEL para retomar operacoes"
 
         else:
-
             if signal == "ENTER":
                 self.over_write = True
 
@@ -118,7 +117,7 @@ class Calculadora(QMainWindow):
             elif signal == "CLR":
                 self.stack.clear()
 
-            elif len(signal.split(" ")) > 1:
+            elif len(signal.split(" ")) > 1 and self.registrador != '0.0':
 
                 if self.registrador.isdigit():
                     self.stack.push(np.float64(self.avaliar_registrador()))
