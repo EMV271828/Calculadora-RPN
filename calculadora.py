@@ -86,7 +86,7 @@ class Calculadora(QMainWindow):
 
         return str(self.stack.ultimo_elemento())
 
-    def operacao(self, signal):
+    def operacao(self, signal, idt):
 
         if self.mensagem_de_erro and signal != 'DEL':
             self.registrador = "Clique em DEL para retomar operacoes"
@@ -118,8 +118,11 @@ class Calculadora(QMainWindow):
             elif signal == "CLR":
                 self.stack.clear()
 
-            elif signal == "DEG" or signal == "RAG":
-                pass
+            elif signal == "Deg" or signal == "Rad":
+                if signal == "Deg":
+                    self.painel2.botoes.button(idt).setText("Rad")
+                else:
+                    self.painel2.botoes.button(idt).setText("Deg")
 
             elif len(signal.split(" ")) > 1:
 

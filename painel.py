@@ -35,10 +35,11 @@ class Painel(QWidget):
                 font_size.setPointSize(18)
                 b.setFont(font_size)
                 b.installEventFilter(self)
+
                 if valores[i * 4 + j] == 'Inv':
                     b.setStyleSheet("background-color: red")
 
-                if valores[i * 4 + j] == 'DEG':
+                if valores[i * 4 + j] == 'Deg':
                     b.setStyleSheet("background-color: yellow")
 
                 self.botoes.addButton(b, i * 4 + j)
@@ -65,7 +66,7 @@ class Painel(QWidget):
         return super().eventFilter(obj, e)
 
     def button_input(self, idt):
-        self.calculadora.operacao(self.botoes.button(idt).text())
+        self.calculadora.operacao(self.botoes.button(idt).text(), idt)
 
     def inv_function(self, valores):
         for i, j in enumerate(self.botoes.buttons()):

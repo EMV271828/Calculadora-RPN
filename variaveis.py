@@ -54,14 +54,14 @@ botoes1 = [
 
 botoes2 = [
     'Inv', ' Abs', ' xʸ', ' !'
-    , 'DEG', ' ln', ' log', 'e'
+    , 'Deg', ' log', ' ln', 'e'
     , ' sin', ' cos', ' tan', 'π'
     , 'CLR', ' %', ' ÷', ' √'
 ]
 
 botoes3 = [
     'Inv', ' Abs', ' xʸ', ' !'
-    , 'DEG', ' eˣ', ' 10ˣ', 'e'
+    , 'Deg', ' 10ˣ', ' eˣ', 'e'
     , ' sin⁻¹', ' cos⁻¹', ' tan⁻¹', 'π'
     , 'CLR', ' %', ' ÷', ' 2ˣ'
 ]
