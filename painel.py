@@ -37,7 +37,12 @@ class Painel(QWidget):
                 b.installEventFilter(self)
                 if valores[i * 4 + j] == 'Inv':
                     b.setStyleSheet("background-color: red")
+
+                if valores[i * 4 + j] == 'DEG':
+                    b.setStyleSheet("background-color: yellow")
+
                 self.botoes.addButton(b, i * 4 + j)
+
                 layout.addWidget(b, i, j)
 
         self.setLayout(layout)

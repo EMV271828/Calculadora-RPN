@@ -1,11 +1,12 @@
 import sys
+import re
 from PySide6.QtWidgets import QMainWindow, QHBoxLayout, QApplication
 
 from visor import *
 from painel import *
 from stack import *
-from erros import *
 import variaveis
+from excecoes_customizadas import *
 
 
 class Calculadora(QMainWindow):
@@ -117,27 +118,36 @@ class Calculadora(QMainWindow):
             elif signal == "CLR":
                 self.stack.clear()
 
-            elif len(signal.split(" ")) > 1 and self.registrador != '0.0':
+            elif signal == "DEG" or signal == "RAG":
+                pass
 
-                if self.registrador.isdigit():
-                    self.stack.push(np.float64(self.avaliar_registrador()))
+            elif len(signal.split(" ")) > 1:
 
-                if signal.split(" ")[1] in self.operators['binary']:
-                    try:
-                        self.registrador = self.solver(signal.split(" ")[1], 'binary')
-                    except PrecisaDeDoisOperandos as e:
-                        self.mensagem_de_erro = True
-                        self.stack.pop()
-                        self.registrador = str(e)
+                if self.over_write and (signal.split(" ")[1] == '+' or signal.split(" ")[1] == '-'):
+                    self.registrador = signal.split(" ")[1]
+                    self.over_write = False
+
                 else:
-                    try:
-                        self.registrador = self.solver(signal.split(" ")[1], 'unary')
-                    except PrecisaDeUmOperando as e:
-                        self.mensagem_de_erro = True
-                        self.stack.pop()
-                        self.registrador = str(e)
 
-                self.over_write = True
+                    if bool(re.match(r"^-?\d+(\.\d+)?$", self.registrador)):
+                        self.stack.push(np.float64(self.avaliar_registrador()))
+
+                    if signal.split(" ")[1] in self.operators['binary']:
+                        try:
+                            self.registrador = self.solver(signal.split(" ")[1], 'binary')
+                        except PrecisaDeDoisOperandos as e:
+                            self.mensagem_de_erro = True
+                            self.stack.pop()
+                            self.registrador = str(e)
+                    else:
+                        try:
+                            self.registrador = self.solver(signal.split(" ")[1], 'unary')
+                        except PrecisaDeUmOperando as e:
+                            self.mensagem_de_erro = True
+                            self.stack.pop()
+                            self.registrador = str(e)
+
+                    self.over_write = True
 
             elif self.over_write:
                 self.registrador = signal
