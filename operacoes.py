@@ -6,13 +6,13 @@ from excecoes_customizadas import *
 def div(x, y):
     if x == 0:
         raise DivisaoPorZero()
-    return x / y
+    return y / x
 
 
 def modulo(x, y):
     if x == 0:
         raise DivisaoPorZero()
-    return x % y
+    return y % x
 
 
 def fat(op, x):
