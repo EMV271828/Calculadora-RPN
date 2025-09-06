@@ -134,22 +134,22 @@ class Calculadora(QMainWindow):
 
             elif len(signal.split(" ")) > 1:
 
+                print(self.registrador)
+
                 if self.registrador.isdigit():
                     self.stack.push(np.float64(self.avaliar_registrador()))
 
                 if signal.split(" ")[1] in self.operators['binary']:
                     try:
                         self.registrador = self.solver(signal.split(" ")[1], 'binary')
-                    except PrecisaDeDoisOperandos as e:
+                    except (PrecisaDeDoisOperandos,DivisaoPorZero) as e:
                         self.mensagem_de_erro = True
-                        self.stack.pop()
                         self.registrador = str(e)
                 else:
                     try:
                         self.registrador = self.solver(signal.split(" ")[1], 'unary')
                     except (PrecisaDeUmOperando, ForaDoDominio) as e:
                         self.mensagem_de_erro = True
-                        self.stack.pop()
                         self.registrador = str(e)
 
                 self.over_write = True
