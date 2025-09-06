@@ -30,10 +30,10 @@ class Stack:
 
     def ultimos_elementos(self):
         if self.idx == 0:
-            return str(self.stack[0])
+            return ''
         if 0 < self.idx < 10:
-            return " ".join(str(i) for i in self.stack[:self.idx])
-        return " ".join(str(i) for i in self.stack[self.idx - 10:self.idx])
+            return " ".join("{:.3f}".format(i) for i in self.stack[:self.idx])
+        return " ".join("{:.3f}".format(i) for i in self.stack[self.idx - 10:self.idx])
 
     def clear(self):
         self.idx = 0

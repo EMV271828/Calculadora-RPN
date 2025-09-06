@@ -30,22 +30,27 @@ def cos(x, grau):
 
 
 def tan(op, x, grau):
-    if (x - np.pi/2) % np.pi == 0:
+    if (x - np.pi / 2) % np.pi == 0:
         raise ForaDoDominio(op, 'x = n*π/2, n = 1,2,...')
+
     return np.tan([x])[0] if grau else np.cos([x * np.pi])[0]
 
 
-def arcsin(x, grau):
+def arcsin(op, x, grau):
+    if x > 1 or x < -1:
+        raise ForaDoDominio(op, '-1 < x < 1')
+
     return np.arcsin([x])[0] if grau else np.arcsin([x * np.pi])[0]
 
 
-def arccos(x, grau):
+def arccos(op, x, grau):
+    if x > 1 or x < -1:
+        raise ForaDoDominio(op, '-1 < x < 1')
+
     return np.arccos([x])[0] if grau else np.arccos([x * np.pi])[0]
 
 
-def arctan(op, x, grau):
-    if x % 90 == 0:
-        raise ForaDoDominio(op, 'x!= 90 + n * 180, onde n = 1,2,...')
+def arctan(x, grau):
     return np.arctan([x])[0] if grau else np.arccos([x * np.pi])[0]
 
 
@@ -78,7 +83,7 @@ operadores = {
 
     'trigonometric': {
         'sin': lambda x, grau: sin(x, grau), 'cos': lambda x, grau: cos(x, grau),
-        'tan': lambda x, grau: tan('tan', x, grau), 'sin⁻¹': lambda x, grau: np.arcsin([x])[0],
-        'cos⁻¹': lambda x, grau: np.arccos([x])[0], 'tan⁻¹': lambda x, grau: np.arctan([x])[0]
+        'tan': lambda x, grau: tan('tan', x, grau), 'sin⁻¹': lambda x, grau: arcsin('sin⁻¹', x, grau),
+        'cos⁻¹': lambda x, grau: arccos('cos⁻¹', x, grau), 'tan⁻¹': lambda x, grau: arctan(x, grau)
     }
 }

@@ -1,10 +1,10 @@
 import sys
-from PySide6.QtWidgets import QMainWindow, QHBoxLayout, QApplication
+from PySide6.QtWidgets import QMainWindow, QHBoxLayout, QApplication, QLabel
 
 from visor import *
 from painel import *
 from stack import *
-import variaveis
+import constantes
 import operacoes
 from excecoes_customizadas import *
 
@@ -31,31 +31,35 @@ class Calculadora(QMainWindow):
 
         self.operadores = operacoes.operadores
 
-        self.variaveis = variaveis
+        self.constantes = constantes
+
+        self.stack_label = QLabel("STACK")
 
         self.visor = Visor(str(self.stack.ultimo_elemento()), 27, [900, 150])
 
         self.visor_stack = Visor(self.stack.ultimos_elementos(), 15, [500, 40])
 
-        self.painel1 = Painel(variaveis.botoes1, self)
+        self.painel1 = Painel(constantes.botoes1, self)
 
-        self.painel2 = Painel(variaveis.botoes2, self)
+        self.painel2 = Painel(constantes.botoes2, self)
 
         layout = QVBoxLayout()
 
         layout_menu = QHBoxLayout()
 
-        layout_visores = QVBoxLayout()
+        layout_visor_stack = QHBoxLayout()
 
-        layout_visores.addWidget(self.visor_stack)
+        layout_visor_stack.addWidget(self.stack_label)
 
-        layout_visores.addWidget(self.visor)
+        layout_visor_stack.addWidget(self.visor_stack)
 
         layout_menu.addWidget(self.painel2)
 
         layout_menu.addWidget(self.painel1)
 
-        layout.addLayout(layout_visores)
+        layout.addLayout(layout_visor_stack)
+
+        layout.addWidget(self.visor)
 
         layout.addLayout(layout_menu)
 
@@ -115,10 +119,10 @@ class Calculadora(QMainWindow):
             elif signal == "Inv":
                 if not self.inv_button:
                     self.inv_button = True
-                    self.painel2.inv_function(variaveis.botoes3)
+                    self.painel2.inv_function(constantes.botoes3)
                 else:
                     self.inv_button = False
-                    self.painel2.inv_function(variaveis.botoes2)
+                    self.painel2.inv_function(constantes.botoes2)
 
                 if not self.deg_button:
                     self.painel2.botoes.button(4).setText("Rad")
@@ -153,6 +157,7 @@ class Calculadora(QMainWindow):
                         self.registrador = str(e)
 
                 if signal.split(" ")[1] in self.operadores['binary']:
+
                     try:
                         self.registrador = self.solver(signal.split(" ")[1], 'binary')
                     except (PrecisaDeDoisOperandos, DivisaoPorZero) as e:
