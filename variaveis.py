@@ -3,6 +3,18 @@ from scipy.special import factorial
 from excecoes_customizadas import *
 
 
+def div(x, y):
+    if x == 0:
+        raise DivisaoPorZero()
+    return x / y
+
+
+def modulo(x, y):
+    if x == 0:
+        raise DivisaoPorZero()
+    return x % y
+
+
 def fat(op, x):
     if x < 0:
         raise ForaDoDominio(op, 'x >= 0')
@@ -34,8 +46,8 @@ def ln(op, x):
 
 
 operadores = {
-    'binary': {'×': lambda x, y: x * y, '-': lambda x, y: y - x, '÷': lambda x, y: y / x,
-               '+': lambda x, y: x + y, '%': lambda x, y: y % x, 'xʸ': lambda x, y: x ** y
+    'binary': {'×': lambda x, y: x * y, '-': lambda x, y: y - x, '÷': lambda x, y: div(x, y),
+               '+': lambda x, y: x + y, '%': lambda x, y: modulo(x, y), 'xʸ': lambda x, y: y ** x
                },
     'unary': {'10ˣ': lambda x: 10 ** x, 'Abs': lambda x: np.abs(x), 'eˣ': lambda x: np.exp([x])[0],
               '!': lambda x: fat('!', x), 'log': lambda x: log('log', x), '2ˣ': lambda x: np.exp2([x])[0],

@@ -23,3 +23,7 @@ class ForaDoDominio(Exception):
 
     def __str__(self):
         return f"Use valores {self.dominio} para '{self.op}'"
+
+class DivisaoPorZero(Exception):
+    def __str__(self):
+        return "Divisão por zero"

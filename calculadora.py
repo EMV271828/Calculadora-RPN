@@ -1,5 +1,4 @@
 import sys
-import re
 from PySide6.QtWidgets import QMainWindow, QHBoxLayout, QApplication
 
 from visor import *
@@ -94,7 +93,6 @@ class Calculadora(QMainWindow):
             self.registrador = "Clique em DEL para retomar operacoes"
 
         else:
-            print(idt)
 
             if signal == "ENTER":
                 self.over_write = True
@@ -124,6 +122,7 @@ class Calculadora(QMainWindow):
 
             elif signal == "CLR":
                 self.stack.clear()
+                self.registrador = str(self.stack.ultimo_elemento())
 
             elif signal == "Deg" or signal == "Rad":
                 if self.deg_button:
@@ -135,31 +134,25 @@ class Calculadora(QMainWindow):
 
             elif len(signal.split(" ")) > 1:
 
-                if self.over_write and (signal.split(" ")[1] == '+' or signal.split(" ")[1] == '-'):
-                    self.registrador = signal.split(" ")[1]
-                    self.over_write = False
+                if self.registrador.isdigit():
+                    self.stack.push(np.float64(self.avaliar_registrador()))
 
+                if signal.split(" ")[1] in self.operators['binary']:
+                    try:
+                        self.registrador = self.solver(signal.split(" ")[1], 'binary')
+                    except PrecisaDeDoisOperandos as e:
+                        self.mensagem_de_erro = True
+                        self.stack.pop()
+                        self.registrador = str(e)
                 else:
+                    try:
+                        self.registrador = self.solver(signal.split(" ")[1], 'unary')
+                    except (PrecisaDeUmOperando, ForaDoDominio) as e:
+                        self.mensagem_de_erro = True
+                        self.stack.pop()
+                        self.registrador = str(e)
 
-                    if bool(re.match(r"^-?\d+(\.\d+)?$", self.registrador)):
-                        self.stack.push(np.float64(self.avaliar_registrador()))
-
-                    if signal.split(" ")[1] in self.operators['binary']:
-                        try:
-                            self.registrador = self.solver(signal.split(" ")[1], 'binary')
-                        except PrecisaDeDoisOperandos as e:
-                            self.mensagem_de_erro = True
-                            self.stack.pop()
-                            self.registrador = str(e)
-                    else:
-                        try:
-                            self.registrador = self.solver(signal.split(" ")[1], 'unary')
-                        except (PrecisaDeUmOperando, ForaDoDominio) as e:
-                            self.mensagem_de_erro = True
-                            self.stack.pop()
-                            self.registrador = str(e)
-
-                    self.over_write = True
+                self.over_write = True
 
             elif self.over_write:
                 self.registrador = signal
