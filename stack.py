@@ -31,7 +31,7 @@ class Stack:
     def ultimos_elementos(self):
         if self.idx == 0:
             return str(self.stack[0])
-        if 1 <= self.idx < 10:
+        if 0 < self.idx < 10:
             return " ".join(str(i) for i in self.stack[:self.idx])
         return " ".join(str(i) for i in self.stack[self.idx - 10:self.idx])
 

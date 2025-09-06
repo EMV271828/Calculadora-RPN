@@ -5,6 +5,7 @@ from visor import *
 from painel import *
 from stack import *
 import variaveis
+import operacoes
 from excecoes_customizadas import *
 
 
@@ -28,7 +29,9 @@ class Calculadora(QMainWindow):
 
         self.stack = Stack(50)
 
-        self.operators = variaveis.operadores
+        self.operadores = operacoes.operadores
+
+        self.variaveis = variaveis
 
         self.visor = Visor(str(self.stack.ultimo_elemento()), 27, [900, 150])
 
@@ -64,10 +67,10 @@ class Calculadora(QMainWindow):
 
     def avaliar_registrador(self):
         if self.registrador == 'e':
-            return '2.71828182846'
+            return np.e
 
         if self.registrador == 'π':
-            return '3.14159265359'
+            return np.pi
 
         return self.registrador
 
@@ -77,13 +80,18 @@ class Calculadora(QMainWindow):
             if self.stack.tamanho < 2:
                 raise PrecisaDeDoisOperandos(operador)
 
-            self.stack.push(self.operators[tipo][operador](self.stack.pop(), self.stack.pop()))
+            self.stack.push(self.operadores[tipo][operador](self.stack.pop(), self.stack.pop()))
 
+        elif tipo == 'trigonometric':
+            if self.stack.tamanho < 1:
+                raise PrecisaDeUmOperando(operador)
+
+            self.stack.push(self.operadores[tipo][operador](self.stack.pop(), self.deg_button))
         else:
             if self.stack.tamanho < 1:
                 raise PrecisaDeUmOperando(operador)
 
-            self.stack.push(self.operators[tipo][operador](self.stack.pop()))
+            self.stack.push(self.operadores[tipo][operador](self.stack.pop()))
 
         return str(self.stack.ultimo_elemento())
 
@@ -95,11 +103,14 @@ class Calculadora(QMainWindow):
         else:
 
             if signal == "ENTER":
-                self.over_write = True
+                try:
+                    self.over_write = True
+                    self.stack.push(np.float64(self.avaliar_registrador()))
+                    self.registrador = str(self.stack.ultimo_elemento())
 
-                self.stack.push(np.float64(self.avaliar_registrador()))
-
-                self.registrador = str(self.stack.ultimo_elemento())
+                except StackOverflow as e:
+                    self.mensagem_de_erro = True
+                    self.registrador = str(e)
 
             elif signal == "Inv":
                 if not self.inv_button:
@@ -134,18 +145,29 @@ class Calculadora(QMainWindow):
 
             elif len(signal.split(" ")) > 1:
 
-                if self.registrador.isdigit():
-                    self.stack.push(np.float64(self.avaliar_registrador()))
+                if self.registrador.isdigit() or self.registrador == 'e' or self.registrador == 'π':
+                    try:
+                        self.stack.push(np.float64(self.avaliar_registrador()))
+                    except StackOverflow as e:
+                        self.mensagem_de_erro = True
+                        self.registrador = str(e)
 
-                if signal.split(" ")[1] in self.operators['binary']:
+                if signal.split(" ")[1] in self.operadores['binary']:
                     try:
                         self.registrador = self.solver(signal.split(" ")[1], 'binary')
                     except (PrecisaDeDoisOperandos, DivisaoPorZero) as e:
                         self.mensagem_de_erro = True
                         self.registrador = str(e)
 
-                        if self.stack.idx == 1 and self.stack.stack[self.stack.idx-1] != 0.0:
+                        if self.stack.idx == 1 and self.stack.stack[self.stack.idx - 1] != 0.0:
                             self.stack.pop()
+
+                elif signal.split(" ")[1] in self.operadores['trigonometric']:
+                    try:
+                        self.registrador = self.solver(signal.split(" ")[1], 'trigonometric')
+                    except (PrecisaDeUmOperando, ForaDoDominio) as e:
+                        self.mensagem_de_erro = True
+                        self.registrador = str(e)
 
                 else:
                     try:
