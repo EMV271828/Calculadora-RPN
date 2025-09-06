@@ -10,4 +10,4 @@ Calculadora científca que utiliza a técnica de notação polonesa reversa (rpn
 
 ## Imagens
 
-<img src="https://github.com/EMV271828/Calculadora-RPN/blob/main/imagens/rpn_1.png" width="200">
+<img src="https://github.com/EMV271828/Calculadora-RPN/blob/main/imagens/rpn_1.png">
