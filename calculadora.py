@@ -81,6 +81,11 @@ class Calculadora(QMainWindow):
     def solver(self, operador, tipo):
 
         if tipo == 'binary':
+
+            if operador == '-' and self.stack.tamanho == 1:
+                self.stack.push(-1)
+                operador = '×'
+
             if self.stack.tamanho < 2:
                 raise PrecisaDeDoisOperandos(operador)
 
