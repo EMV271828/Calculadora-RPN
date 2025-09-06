@@ -15,6 +15,7 @@ class PrecisaDeUmOperando(Exception):
     def __str__(self):
         return f"'{self.op}' precisa de um operando"
 
+
 class ForaDoDominio(Exception):
     def __init__(self, op, dominio):
         super().__init__()
@@ -24,6 +25,12 @@ class ForaDoDominio(Exception):
     def __str__(self):
         return f"Use valores {self.dominio} para '{self.op}'"
 
+
 class DivisaoPorZero(Exception):
     def __str__(self):
         return "Divisão por zero"
+
+
+class StackOverflow(Exception):
+    def __str__(self):
+        return "Overflow do Stack"

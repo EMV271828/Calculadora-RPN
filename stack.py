@@ -1,4 +1,5 @@
 import numpy as np
+from excecoes_customizadas import *
 
 
 class Stack:
@@ -9,20 +10,20 @@ class Stack:
         self.tamanho = 0
 
     def pop(self):
-        if self.tamanho > 0:
-            value = self.stack[self.idx - 1]
-            self.stack[self.idx - 1] = 0.0
-            self.idx -= 1
-            self.tamanho -= 1
-            return value
-        else:
-            return None
+
+        value = self.stack[self.idx - 1]
+        self.stack[self.idx - 1] = 0.0
+        self.idx -= 1
+        self.tamanho -= 1
+        return value
 
     def push(self, valor):
         if self.tamanho < self.n:
             self.stack[self.idx] = valor
             self.idx += 1
             self.tamanho += 1
+        else:
+            raise StackOverflow()
 
     def ultimo_elemento(self):
         return self.stack[self.idx - 1]
