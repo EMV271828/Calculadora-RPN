@@ -1,9 +1,9 @@
 import sys
-from visor import *
-from painel import *
-from calculadora_parte_logica import *
-from calculadora_parte_grafica import *
-from stack import *
+from calculadora_componentes.visor import *
+from calculadora_componentes.painel import *
+from calculadora_componentes.calculadora_parte_logica import *
+from calculadora_componentes.calculadora_parte_grafica import *
+from calculadora_componentes.stack import *
 import constantes
 
 
@@ -22,10 +22,10 @@ class Calculadora(QMainWindow):
         self.painel2 = Painel(constantes.botoes2, self)
 
         self.parte_logica = CalculadoraParteLogica(self.painel1, self.painel2, self.visor,
-                                                               self.visor_stack, self.stack)
+                                                   self.visor_stack, self.stack)
 
         self.parte_grafica = CalculadoraParteGrafica(self.visor, self.visor_stack, self.painel1,
-                                                                 self.painel2)
+                                                     self.painel2)
 
 
 if __name__ == '__main__':

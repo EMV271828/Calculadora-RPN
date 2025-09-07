@@ -1,5 +1,5 @@
 import numpy as np
-from excecoes_customizadas import *
+from calculadora_pyside_rpn import excecoes_customizadas
 
 
 class Stack:
