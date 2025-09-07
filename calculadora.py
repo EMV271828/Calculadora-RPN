@@ -4,7 +4,7 @@ from calculadora_componentes.painel import *
 from calculadora_componentes.calculadora_parte_logica import *
 from calculadora_componentes.calculadora_parte_grafica import *
 from calculadora_componentes.stack import *
-import constantes
+from calculadora_componentes_secundarios import constantes
 
 
 class Calculadora(QMainWindow):

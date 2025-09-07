@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.special import factorial
-from excecoes_customizadas import *
+from calculadora_pyside_rpn.calculadora_componentes_secundarios.excecoes_customizadas import *
 
 
 def div(x, y):

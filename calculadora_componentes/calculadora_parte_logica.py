@@ -1,7 +1,7 @@
 import numpy as np
-from calculadora_pyside_rpn import operacoes
-from calculadora_pyside_rpn import constantes
-from calculadora_pyside_rpn.excecoes_customizadas import *
+from calculadora_pyside_rpn.calculadora_componentes_secundarios import operacoes
+from calculadora_pyside_rpn.calculadora_componentes_secundarios import constantes
+from calculadora_pyside_rpn.calculadora_componentes_secundarios.excecoes_customizadas import *
 
 
 class CalculadoraParteLogica:
