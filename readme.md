@@ -6,7 +6,7 @@ Calculadora científca que utiliza a técnica de notação polonesa reversa (rpn
 ## Tecnologias utilizadas
 - ``Python``
 - ``NumPy``
-- ``Pyside6``
+- ``PySide6``
 
 ## Imagens
 
