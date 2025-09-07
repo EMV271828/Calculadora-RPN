@@ -46,6 +46,9 @@ class CalculadoraParteLogica:
                 self.stack.push(-1)
                 operador = '×'
 
+            if operador != '-' and self.stack.tamanho == 1:
+                self.stack.pop()
+
             if self.stack.tamanho < 2:
                 raise PrecisaDeDoisOperandos(operador)
 
@@ -129,7 +132,8 @@ class CalculadoraParteLogica:
                         self.mensagem_de_erro = True
                         self.registrador = str(e)
 
-                        if self.stack.idx == 1 and self.stack.stack[self.stack.idx - 1] != 0.0:
+                        if self.stack.idx == 1 and self.stack.stack[self.stack.idx] != 0.0 and self.stack.stack[
+                            self.stack.idx - 1] != 0.0:
                             self.stack.pop()
 
                 elif signal.split(" ")[1] in self.operadores['trigonometric']:
