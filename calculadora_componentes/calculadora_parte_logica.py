@@ -125,7 +125,6 @@ class CalculadoraParteLogica:
 
                     if bool(re.match(r'^[-+]?(?:\d+(?:\.\d*)?|\.\d+)$', self.registrador)
                             or self.registrador in ['e', 'π']):
-                    # if self.registrador.isdigit():
                         try:
                             self.stack.push(np.float64(self.avaliar_registrador()))
                         except StackOverflow as e:
