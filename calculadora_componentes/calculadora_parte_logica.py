@@ -1,5 +1,4 @@
 import re
-
 import numpy as np
 from calculadora_pyside_rpn.calculadora_componentes_secundarios import operacoes
 from calculadora_pyside_rpn.calculadora_componentes_secundarios import constantes
@@ -41,9 +40,6 @@ class CalculadoraParteLogica:
         return self.registrador
 
     def solver(self, operador, tipo):
-
-        if self.over_write and str(self.stack.ultimo_elemento()) == self.registrador:
-            self.stack.pop()
 
         if tipo == 'binary':
 
@@ -123,8 +119,9 @@ class CalculadoraParteLogica:
 
                 case _ if len(signal.split(" ")) > 1:
 
-                    if bool(re.match(r'^[-+]?(?:\d+(?:\.\d*)?|\.\d+)$', self.registrador)
-                            or self.registrador in ['e', 'π']):
+                    if not (self.over_write and np.float64(self.stack.ultimo_elemento()) == np.float64(
+                            self.registrador)) and bool(re.match(r'^[-+]?(?:\d+(?:\.\d*)?|\.\d+)$', self.registrador)
+                                                        or self.registrador in ['e', 'π']):
                         try:
                             self.stack.push(np.float64(self.avaliar_registrador()))
                         except StackOverflow as e:
