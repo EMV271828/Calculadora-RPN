@@ -1,5 +1,5 @@
 import numpy as np
-from calculadora_pyside_rpn.calculadora_componentes_secundarios import excecoes_customizadas
+from calculadora_pyside_rpn.calculadora_componentes_secundarios.excecoes_customizadas import StackOverflow
 
 
 class Stack:

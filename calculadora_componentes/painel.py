@@ -66,7 +66,7 @@ class Painel(QWidget):
         return super().eventFilter(obj, e)
 
     def button_input(self, idt):
-        self.calculadora.parte_logica.operacao(self.botoes.button(idt).text(), idt)
+        self.calculadora.parte_logica.iniciar_operacao(self.botoes.button(idt).text(), idt)
 
     def inv_function(self, valores):
         for i, j in enumerate(self.botoes.buttons()):
